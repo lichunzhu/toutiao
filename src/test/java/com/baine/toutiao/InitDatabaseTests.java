@@ -1,20 +1,18 @@
 package com.baine.toutiao;
 
-//import com.baine.toutiao.dao.NewsDAO;
+import com.baine.toutiao.dao.LoginTicketDAO;
 import com.baine.toutiao.dao.NewsDAO;
 import com.baine.toutiao.dao.UserDAO;
+import com.baine.toutiao.model.LoginTicket;
 import com.baine.toutiao.model.News;
 import com.baine.toutiao.model.User;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.util.Date;
 import java.util.Random;
@@ -28,6 +26,9 @@ public class InitDatabaseTests {
 
     @Autowired
     NewsDAO newsDAO;
+
+    @Autowired
+    LoginTicketDAO loginTicketDAO;
 
     @Test
     public void initData() {
@@ -54,6 +55,15 @@ public class InitDatabaseTests {
 
             user.setPassword("newpassword");
             userDAO.updatePassword(user);
+
+            LoginTicket ticket = new LoginTicket();
+            ticket.setStatus(0);
+            ticket.setUserId(i + 1);
+            ticket.setExpired(date);
+            ticket.setTicket(String.format("TICKET%d", i + 1));
+            loginTicketDAO.addTicket(ticket);
+
+            loginTicketDAO.updateStatus(ticket.getTicket(), 2);
         }
 
         Assert.assertEquals("newpassword", userDAO.selectById(1).getPassword());

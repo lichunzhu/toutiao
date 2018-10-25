@@ -11,11 +11,6 @@
 
     <link rel="stylesheet" media="all" href="/styles/style.css">
 
-    <script src="/scripts/hm.js"></script>
-    <script src="/scripts/detail.js"></script>
-
-    <script type="text/javascript" src="/scripts/bootstrap.min.js"></script>
-    <script type="text/javascript" src="/scripts/jquery.qrcode.min.js"></script>
 </head>
 <body class="welcome_index">
 
@@ -40,8 +35,11 @@
             <ul class="nav navbar-nav navbar-right">
                 <li class=""><a href="http://nowcoder.com/explore">发现</a></li>
 
-                <li><a href="http://nowcoder.com/signin">站内信</a></li>
-                <li class=""><a href="http://nowcoder.com/about">登陆</a></li>
+                <#if user??>
+                <li class="js-login"><a href="javascript:void(0)">${user.name}</a></li>
+                <#else>
+                <li class="js-login"><a href="javascript:void(0)">登陆</a></li>
+                </#if>
             </ul>
 
         </nav>
@@ -222,8 +220,14 @@
     </div>
 </div>
 
-<script>
-</script>
+<script type="text/javascript" src="/scripts/jquery.js"></script>
+<script type="text/javascript" src="/scripts/main/base/base.js"></script>
+<script type="text/javascript" src="/scripts/main/base/util.js"></script>
+<script type="text/javascript" src="/scripts/main/base/event.js"></script>
+<script type="text/javascript" src="/scripts/main/component/component.js"></script>
+<script type="text/javascript" src="/scripts/main/component/popup.js"></script>
+<script type="text/javascript" src="/scripts/main/component/popupLogin.js"></script>
+<script type="text/javascript" src="/scripts/main/site/home.js"></script>
 
 
 </body></html>
