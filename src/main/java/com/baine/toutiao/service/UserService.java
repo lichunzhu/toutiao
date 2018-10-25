@@ -1,25 +1,23 @@
 package com.baine.toutiao.service;
 
+import com.baine.toutiao.dao.LoginTicketDAO;
 import com.baine.toutiao.dao.UserDAO;
+import com.baine.toutiao.model.LoginTicket;
 import com.baine.toutiao.model.User;
 import com.baine.toutiao.util.ToutiaoUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-import java.util.Random;
+import java.util.*;
 
 @Service
 public class UserService {
-    private final UserDAO userDAO;
+    @Autowired
+    UserDAO userDAO;
 
     @Autowired
-    public UserService(UserDAO userDAO) {
-        this.userDAO = userDAO;
-    }
+    LoginTicketDAO loginTicketDAO;
 
     public Map<String, Object> registerUser(String username, String password) {
         Map<String, Object> map = new HashMap<>();
@@ -50,6 +48,8 @@ public class UserService {
         userDAO.addUser(user);
 
         // login
+        String ticket = addLoginTicket(user.getId());
+        map.put("ticket", ticket);
 
         return map;
     }
@@ -79,11 +79,29 @@ public class UserService {
         }
 
         // 下发ticket
+        String ticket = addLoginTicket(user.getId());
+        map.put("ticket", ticket);
 
         return map;
     }
 
+    public void logout(String ticket) {
+        loginTicketDAO.updateStatus(ticket, 1);
+    }
+
     public User getUser(int id) {
         return userDAO.selectById(id);
+    }
+
+    private String addLoginTicket(int userId) {
+        LoginTicket ticket = new LoginTicket();
+        ticket.setUserId(userId);
+        Date date = new Date();
+        date.setTime(date.getTime() + 1000 * 3600 * 24);
+        ticket.setExpired(date);
+        ticket.setStatus(0);
+        ticket.setTicket(UUID.randomUUID().toString().replaceAll("-", ""));
+        loginTicketDAO.addTicket(ticket);
+        return ticket.getTicket();
     }
 }

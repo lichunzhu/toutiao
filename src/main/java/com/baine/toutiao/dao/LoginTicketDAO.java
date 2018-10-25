@@ -1,7 +1,6 @@
 package com.baine.toutiao.dao;
 
 import com.baine.toutiao.model.LoginTicket;
-import com.baine.toutiao.model.User;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +12,7 @@ public interface LoginTicketDAO {
     String SELECT_FIELDS = " id, " + INSERT_FIELDS;
 
     @Insert({"insert into ", TABLE_NAME, "(", INSERT_FIELDS,
-            ") values (#{name}, #{password}, #{salt}, #{headUrl})"})
+            ") values (#{userId}, #{expired}, #{status}, #{ticket})"})
     int addTicket(LoginTicket ticket);
 
     @Select({"select ", SELECT_FIELDS, " from ", TABLE_NAME, " where ticket=#{ticket}"})
