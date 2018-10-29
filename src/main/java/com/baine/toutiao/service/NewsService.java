@@ -23,11 +23,18 @@ public class NewsService {
         this.newsDAO = newsDAO;
     }
 
+    @Autowired
+    private QiniuService qiniuService;
+
+    public int addNews(News news) {
+        return newsDAO.addNews(news);
+    }
+
     public List<News> getLatestNews(int userId, int offset, int limit) {
         return newsDAO.selectByUserIdAndOffset(userId, offset, limit);
     }
 
-    public String saveImage(MultipartFile file) throws IOException {
+    public String saveImageLocal(MultipartFile file) throws IOException {
         // xxx._=someName.jpg
         int dotPos = file.getOriginalFilename().lastIndexOf(".");
         if (dotPos < 0) {
@@ -43,5 +50,19 @@ public class NewsService {
                    StandardCopyOption.REPLACE_EXISTING);
         // xxx.???
         return ToutiaoUtil.TOUTIAO_DOMAIN + "image?name=" + fileName;
+    }
+
+    public String saveImageOnline(MultipartFile file) throws IOException {
+        // xxx._=someName.jpg
+        int dotPos = file.getOriginalFilename().lastIndexOf(".");
+        if (dotPos < 0) {
+            return null;
+        }
+        String fileExt = file.getOriginalFilename().substring(dotPos + 1).toLowerCase();
+        if (!ToutiaoUtil.isFileAllowed(fileExt)) {
+            return null;
+        }
+
+        return qiniuService.uploadImage(file);
     }
 }

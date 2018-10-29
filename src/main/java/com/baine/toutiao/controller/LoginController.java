@@ -25,7 +25,7 @@ public class LoginController {
     UserService userService;
 
 
-    @RequestMapping(path = {"/reg"}, method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(path = {"/reg/"}, method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
     public String register(Model model, @RequestParam("username") String username,
                            @RequestParam("password") String password,
@@ -51,14 +51,14 @@ public class LoginController {
         }
     }
 
-    @RequestMapping(path = {"/login"}, method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(path = {"/login/"}, method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
     public String login(Model model, @RequestParam("username") String username,
                         @RequestParam("password") String password,
                         @RequestParam(value = "rember", defaultValue = "0") int rememberMe,
                         HttpServletResponse response) {
         try {
-            Map<String, Object> map = userService.registerUser(username, password);
+            Map<String, Object> map = userService.loginUser(username, password);
             if (map.containsKey("ticket")) {
                 Cookie cookie = new Cookie("ticket", map.get("ticket").toString());
                 cookie.setPath("/");

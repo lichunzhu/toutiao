@@ -73,7 +73,7 @@ public class UserService {
             return map;
         }
 
-        if (ToutiaoUtil.MD5(password + user.getSalt()).equals(user.getPassword())) {
+        if (!ToutiaoUtil.MD5(password + user.getSalt()).equals(user.getPassword())) {
             map.put("msgpwd", "密码不正确");
             return map;
         }
