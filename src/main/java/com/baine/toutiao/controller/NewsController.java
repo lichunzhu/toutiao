@@ -1,34 +1,64 @@
 package com.baine.toutiao.controller;
 
-import com.baine.toutiao.model.HostHolder;
-import com.baine.toutiao.model.News;
+import com.baine.toutiao.model.*;
+import com.baine.toutiao.service.CommentService;
 import com.baine.toutiao.service.NewsService;
+import com.baine.toutiao.service.UserService;
 import com.baine.toutiao.util.ToutiaoUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.util.StreamUtils;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Controller
 public class NewsController {
     private static final Logger logger = LoggerFactory.getLogger(NewsController.class);
 
     @Autowired
+    UserService userService;
+
+    @Autowired
     NewsService newsService;
 
     @Autowired
+    CommentService commentService;
+
+    @Autowired
     HostHolder hostHolder;
+
+    @RequestMapping(path = {"/news/{newsId}"}, method = {RequestMethod.GET})
+    public String newsDetail(@PathVariable("newsId") int newsId, Model model) {
+        try {
+            News news = newsService.getById(newsId);
+            if (news != null) {
+                List<Comment> comments = commentService.getCommentsByEntity(news.getId(), EntityType.ENTITY_NEWS);
+                List<ViewObject> commentVOs = new ArrayList<ViewObject>();
+                for (Comment comment: comments) {
+                    ViewObject commentVO = new ViewObject();
+                    commentVO.set("comment", comment);
+                    commentVO.set("user", userService.getUser(comment.getUserId()));
+                    commentVOs.add(commentVO);
+                }
+                model.addAttribute("comments", commentVOs);
+                model.addAttribute("news", news);
+                model.addAttribute("owner", userService.getUser(news.getUserId()));
+            }
+        } catch (Exception e) {
+            logger.error("获取资讯失败" + e.getMessage());
+        }
+        return "detail";
+    }
 
     @RequestMapping(path = {"/image"}, method = {RequestMethod.GET})
     @ResponseBody

@@ -71,6 +71,21 @@
 			<version>7.2.17</version>
 		</dependency>
 
+		<!-- freemarker 继承相关 开始-->
+		<!--rapid-framework 模板继承框架-->
+		<dependency>
+			<groupId>com.googlecode.rapid-framework</groupId>
+			<artifactId>rapid-core</artifactId>
+			<version>4.0.5</version>
+		</dependency>
+		<!-- lang包 缺少的话可能会报错  -->
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>2.6</version>
+		</dependency>
+		<!-- freemarker 继承相关 结束-->
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
