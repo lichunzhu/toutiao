@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.util.HtmlUtils;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
@@ -58,6 +59,31 @@ public class NewsController {
             logger.error("获取资讯失败" + e.getMessage());
         }
         return "detail";
+    }
+
+    @RequestMapping(path = {"/addComment"}, method = {RequestMethod.POST})
+    public String addComment(@RequestParam("newsId") int newsId,
+                             @RequestParam("content") String content) {
+        try {
+            content = HtmlUtils.htmlEscape(content);
+            // content 过滤
+            Comment comment = new Comment();
+            comment.setUserId(hostHolder.getUser().getId());
+            comment.setContent(content);
+            comment.setEntityId(newsId);
+            comment.setEntityType(EntityType.ENTITY_NEWS);
+            comment.setCreatedDate(new Date());
+            comment.setStatus(0);
+
+            commentService.addComment(comment);
+            // 更新news中的评论数量
+            int count = commentService.getCommentCount(comment.getEntityId(), comment.getEntityType());
+            newsService.updateCommentCount(comment.getEntityId(), count);
+            // 待加入 -> 异步化
+        } catch (Exception e) {
+            logger.error("添加评论失败" + e.getMessage());
+        }
+        return "redirect:/news/" + String.valueOf(newsId);
     }
 
     @RequestMapping(path = {"/image"}, method = {RequestMethod.GET})

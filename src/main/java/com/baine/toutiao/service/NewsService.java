@@ -69,4 +69,8 @@ public class NewsService {
 
         return qiniuService.uploadImage(file);
     }
+
+    public int updateCommentCount(int id, int count) {
+        return newsDAO.updateCommentCount(id, count);
+    }
 }
