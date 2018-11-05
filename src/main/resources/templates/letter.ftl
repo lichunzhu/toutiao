@@ -19,9 +19,11 @@
                         </div>
                     </div>
                     <div class="chat-headbox">
-                        <span class="msg-num">
-                            ${conversation.unreadCount!}
-                        </span>
+                        <#if conversation.unreadCount?? && conversation.unreadCount gt 0>
+                            <span class="msg-num">
+                                ${conversation.unreadCount!}
+                            </span>
+                        </#if>
                         <a class="list-head" href="/user/${conversation.userId!}">
                             <img alt="头像" src="${conversation.headUrl!}">
                         </a>

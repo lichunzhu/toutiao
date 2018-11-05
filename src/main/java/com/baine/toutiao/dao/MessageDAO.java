@@ -1,10 +1,7 @@
 package com.baine.toutiao.dao;
 
 import com.baine.toutiao.model.Message;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -32,4 +29,7 @@ public interface MessageDAO {
 
     @Select({"select ", SELECT_FIELDS, " from ", TABLE_NAME, " where conversation_id=#{conversationId} order by id desc limit #{offset},#{limit}"})
     List<Message> getConversationDetail(@Param("conversationId") String conversationId, @Param("offset") int offset, @Param("limit") int limit);
+
+    @Update({"update ", TABLE_NAME, " set has_read=#{hasRead} where id=#{id}"})
+    int updateHasRead(@Param("id") int id, @Param("hasRead") int hasRead);
 }

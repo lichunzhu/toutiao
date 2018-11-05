@@ -16,6 +16,10 @@ public class MessageService {
         return messageDAO.addMessage(message);
     }
 
+    public int updateHasRead(int id, int hasRead) {
+        return messageDAO.updateHasRead(id, hasRead);
+    }
+
     public List<Message> getConversationList(int userId, int offset, int limit) {
         // conversation的总条数存在id里
         return messageDAO.getConversationList(userId, offset, limit);

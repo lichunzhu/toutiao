@@ -70,7 +70,8 @@ public class MessageController {
                 int targetId = msg.getFromId() == localUserId ? msg.getToId() : msg.getFromId();
                 User user = userService.getUser(targetId);
                 vo.set("headUrl", user.getHeadUrl());
-                vo.set("target", user);
+                vo.set("userId", user.getId());
+                vo.set("userName", user.getName());
                 conversations.add(vo);
             }
             model.addAttribute("conversations", conversations);
@@ -95,6 +96,7 @@ public class MessageController {
                 vo.set("headUrl", user.getHeadUrl());
                 vo.set("userId", user.getId());
                 messages.add(vo);
+                messageService.updateHasRead(msg.getId(), 1);
             }
             model.addAttribute("messages", messages);
         } catch (Exception e) {
