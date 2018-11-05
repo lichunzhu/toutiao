@@ -1,5 +1,6 @@
 package com.baine.toutiao.controller;
 
+import com.baine.toutiao.model.HostHolder;
 import com.baine.toutiao.model.Message;
 import com.baine.toutiao.model.User;
 import com.baine.toutiao.model.ViewObject;
@@ -31,6 +32,9 @@ public class MessageController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    HostHolder hostHolder;
+
     @RequestMapping(path = {"/msg/addMessage"}, method = {RequestMethod.POST})
     @ResponseBody
     public String addMessage(@RequestParam("fromId") int fromId,
@@ -50,6 +54,30 @@ public class MessageController {
             logger.error("发送站内信失败" + e.getMessage());
             return ToutiaoUtil.getJSONString(1, "发送站内信失败");
         }
+    }
+
+    @RequestMapping(path = {"/msg/list"}, method = {RequestMethod.GET, RequestMethod.POST})
+    public String conversationList(Model model) {
+        try {
+            int localUserId = hostHolder.getUser().getId();
+            List<ViewObject> conversations = new ArrayList<>();
+            List<Message> conversationList = messageService.getConversationList(localUserId, 0, 10);
+            for (Message msg: conversationList) {
+                ViewObject vo = new ViewObject();
+                vo.set("conversation", msg);
+                vo.set("unreadCount", messageService.getUnreadCount(localUserId, msg.getConversationId()));
+                // 可能是我发给别人, 也可能是别人发给我
+                int targetId = msg.getFromId() == localUserId ? msg.getToId() : msg.getFromId();
+                User user = userService.getUser(targetId);
+                vo.set("headUrl", user.getHeadUrl());
+                vo.set("target", user);
+                conversations.add(vo);
+            }
+            model.addAttribute("conversations", conversations);
+        } catch (Exception e) {
+            logger.error("获取对话站内信列表失败" + e.getMessage());
+        }
+        return "letter";
     }
 
     @RequestMapping(path = {"/msg/detail"}, method = {RequestMethod.GET, RequestMethod.POST})

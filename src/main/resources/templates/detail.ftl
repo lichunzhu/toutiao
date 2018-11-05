@@ -12,23 +12,23 @@
 
                 <div class="content" data-url="http://nowcoder.com/posts/5l3hjr">
                       <div class="content-img">
-                          <img src="${news.image}" alt="">
+                          <img src="${news.image!}" alt="">
                       </div>
                       <div class="content-main">
                           <h3 class="title">
-                              <a target="_blank" rel="external nofollow" href="${news.link}">${news.title}</a>
+                              <a target="_blank" rel="external nofollow" href="${news.link!}">${news.title!}</a>
                           </h3>
                           <div class="meta">
-                              ${news.link}
+                              ${news.link!}
                               <span>
-                                  <i class="fa icon-comment"></i> ${news.commentCount}
+                                  <i class="fa icon-comment"></i> ${news.commentCount!}
                               </span>
                           </div>
                       </div>
                   </div>
             <div class="user-info">
                 <div class="user-avatar">
-                    <a href="http://nowcoder.com/u/125701"><img width="32" class="img-circle" src="${owner.headUrl}"></a>
+                    <a href="http://nowcoder.com/u/125701"><img width="32" class="img-circle" src="${owner.headUrl!}"></a>
                 </div>
                 <!--
                 <div class="info">
@@ -42,7 +42,7 @@
                 -->
                 </div>
 
-                <div class="subject-name">来自 <a href="/user/${owner.id}">${owner.name}</a></div>
+                <div class="subject-name">来自 <a href="/user/${owner.id!}">${owner.name!}</a></div>
             </div>
             <!--
             <div class="social-share-button text-center" data-title="读《Web 全栈工程师的自我修养》 http://nowcoder.com/posts/wt2rwy 分享自 @影浅 创建的《web开发的愚人之旅》 http://nowcoder.com/subjects/2245( 想看更多？下载 @牛客网 app：http://nowcoder.com/download )" data-type="text" data-url="null" data-img="http://nowcoder.com/screenshots/8/469448.png">
@@ -63,13 +63,13 @@
 
             <div class="post-comment-form">
                 <#if user??>
-                <span>评论 (${news.commentCount})</span>
+                <span>评论 (${news.commentCount!})</span>
                 <form method="post" action="/addComment">
                   <div class="form-group text required comment_content">
                       <label class="text required sr-only">
                           <abbr title="required">*</abbr> 评论
                       </label>
-                      <input type="hidden" name="newsId" value="${news.id}"/>
+                      <input type="hidden" name="newsId" value="${news.id!}"/>
                       <textarea rows="5" class="text required comment-content form-control" name="content" id="content"></textarea>
                   </div>
                   <div class="text-right">
@@ -87,12 +87,12 @@
                 <#list comments as commentvo>
                 <div class="media">
                     <a class="media-left" href="http://nowcoder.com/u/210176">
-                        <img src="${commentvo.user.headUrl}">
+                        <img src="${commentvo.user.headUrl!}">
                     </a>
                     <div class="media-body">
 
-                        <h4 class="media-heading"> <small class="date">${(commentvo.comment.createdDate)?string('yyyy-MM-dd HH:mm:ss')}</small></h4>
-                        <div>${commentvo.comment.content}</div>
+                        <h4 class="media-heading"> <small class="date">${(commentvo.comment.createdDate!)?string('yyyy-MM-dd HH:mm:ss')}</small></h4>
+                        <div>${commentvo.comment.content!}</div>
                     </div>
                 </div>
                 </#list>

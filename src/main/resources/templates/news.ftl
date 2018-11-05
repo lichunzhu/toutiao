@@ -2,7 +2,7 @@
 <body>
 <pre>
     Hello FTL!
-    ${value1}
+    ${value1!}
 </pre>
 </body>
 </html>
