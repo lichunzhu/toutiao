@@ -7,6 +7,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
 public class ToutiaoWebConfiguration implements WebMvcConfigurer {
     @Autowired
@@ -18,6 +21,9 @@ public class ToutiaoWebConfiguration implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(passportInterceptor);
-        registry.addInterceptor(loginRequiredInterceptor).addPathPatterns("/setting*");
+        List<String> loginRequiredPaths = new ArrayList<>();
+        loginRequiredPaths.add("/setting*");
+        loginRequiredPaths.add("/msg/**/*");
+        registry.addInterceptor(loginRequiredInterceptor).addPathPatterns(loginRequiredPaths);
     }
 }

@@ -1,6 +1,14 @@
 <@extends name="header.ftl"/>
 
 <div id="main">
+    <#if pop != 0>
+        <script type="text/javascript">
+            function myfun() {
+                alert("请在登录后再访问相应网址!");
+            }
+            window.onload=myfun;
+        </script>
+    </#if>
     <!--
         <div class="hero">
             <div class="container-fluid">
