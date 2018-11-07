@@ -2,6 +2,7 @@ package com.baine.toutiao.controller;
 
 import com.baine.toutiao.model.*;
 import com.baine.toutiao.service.CommentService;
+import com.baine.toutiao.service.LikeService;
 import com.baine.toutiao.service.NewsService;
 import com.baine.toutiao.service.UserService;
 import com.baine.toutiao.util.ToutiaoUtil;
@@ -38,11 +39,21 @@ public class NewsController {
     @Autowired
     HostHolder hostHolder;
 
+    @Autowired
+    LikeService likeService;
+
     @RequestMapping(path = {"/news/{newsId}"}, method = {RequestMethod.GET})
     public String newsDetail(@PathVariable("newsId") int newsId, Model model) {
         try {
             News news = newsService.getById(newsId);
             if (news != null) {
+                int localUserId = hostHolder.getUser() != null ? hostHolder.getUser().getId(): 0;
+                if(localUserId != 0) {
+                    model.addAttribute("like", likeService.getLikeStatus(localUserId, EntityType.ENTITY_NEWS, news.getId()));
+                }
+                else {
+                    model.addAttribute("like", 0);
+                }
                 List<Comment> comments = commentService.getCommentsByEntity(news.getId(), EntityType.ENTITY_NEWS);
                 List<ViewObject> commentVOs = new ArrayList<ViewObject>();
                 for (Comment comment: comments) {

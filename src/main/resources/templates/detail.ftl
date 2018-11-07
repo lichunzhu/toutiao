@@ -5,8 +5,16 @@
             <div class="post detail">
 
                 <div class="votebar">
-                    <button class="click-like up" aria-pressed="false" title="赞同"><i class="vote-arrow"></i><span class="count">${news.likeCount}</span></button>
-                    <button class="click-dislike down" aria-pressed="true" title="反对"><i class="vote-arrow"></i>
+                    <#if like gt 0>
+                    <button class="click-like up pressed" data-id="${news.id!}" title="赞同"><i class="vote-arrow"></i><span class="count">${news.likeCount}</span></button>
+                    <#else>
+                    <button class="click-like up" data-id="${news.id!}" title="赞同"><i class="vote-arrow"></i><span class="count">${news.likeCount}</span></button>
+                    </#if>
+                    <#if like lt 0>
+                    <button class="click-dislike down pressed" data-id="${news.id!}" title="反对"><i class="vote-arrow"></i>
+                    <#else>
+                    <button class="click-dislike down" data-id="${news.id!}" title="反对"><i class="vote-arrow"></i>
+                    </#if>
                     </button>
                 </div>
 

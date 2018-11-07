@@ -1,7 +1,10 @@
 package com.baine.toutiao.controller;
 
+import com.baine.toutiao.model.EntityType;
+import com.baine.toutiao.model.HostHolder;
 import com.baine.toutiao.model.News;
 import com.baine.toutiao.model.ViewObject;
+import com.baine.toutiao.service.LikeService;
 import com.baine.toutiao.service.NewsService;
 import com.baine.toutiao.service.UserService;
 import com.sun.org.apache.bcel.internal.generic.NEW;
@@ -22,14 +25,26 @@ public class HomeController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    LikeService likeService;
+
+    @Autowired
+    HostHolder hostHolder;
+
     private List<ViewObject> getNews(int userId, int offset, int limit) {
         List<News> newsList = newsService.getLatestNews(userId, offset, limit);
-
+        int localUserId = hostHolder.getUser() != null ? hostHolder.getUser().getId(): 0;
         List<ViewObject> vos = new ArrayList<>();
         for (News news : newsList) {
             ViewObject vo = new ViewObject();
             vo.set("news", news);
             vo.set("user", userService.getUser(news.getUserId()));
+            if(localUserId != 0) {
+                vo.set("like", likeService.getLikeStatus(localUserId, EntityType.ENTITY_NEWS, news.getId()));
+            }
+            else {
+                vo.set("like", 0);
+            }
             vos.add(vo);
         }
         return vos;

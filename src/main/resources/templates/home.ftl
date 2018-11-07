@@ -1,14 +1,6 @@
 <@extends name="header.ftl"/>
 
 <div id="main">
-    <#if pop != 0>
-        <script type="text/javascript">
-            function myfun() {
-                alert("请在登录后再访问相应网址!");
-            }
-            window.onload=myfun;
-        </script>
-    </#if>
     <!--
         <div class="hero">
             <div class="container-fluid">
@@ -86,8 +78,16 @@
                     </#if>
                         <div class="post">
                             <div class="votebar">
-                                <button class="click-like up" aria-pressed="false" title="赞同"><i class="vote-arrow"></i><span class="count">${vo.news.likeCount!}</span></button>
-                                <button class="click-dislike down" aria-pressed="true" title="反对"><i class="vote-arrow"></i>
+                                <#if vo.like gt 0>
+                                <button class="click-like up pressed" data-id="${vo.news.id!}" title="赞同"><i class="vote-arrow"></i><span class="count">${vo.news.likeCount!}</span></button>
+                                <#else>
+                                <button class="click-like up" data-id="${vo.news.id!}" title="赞同"><i class="vote-arrow"></i><span class="count">${vo.news.likeCount!}</span></button>
+                                </#if>
+                                <#if vo.like lt 0>
+                                <button class="click-dislike down pressed" data-id="${vo.news.id!}" title="反对"><i class="vote-arrow"></i>
+                                <#else>
+                                <button class="click-dislike down" data-id="${vo.news.id!}" title="反对"><i class="vote-arrow"></i>
+                                </#if>
                                 </button>
                             </div>
                             <div class="content" data-url="http://nowcoder.com/posts/5l3hjr">
@@ -142,6 +142,20 @@
 </div>
 
 </div>
+<#if pop??>
+    <script>
+        window.loginpop = ${pop!};
+    </script>
+    <script type="text/javascript" src="/scripts/main/site/home.js"></script>
+    <#if pop != 0>
+    <script type="text/javascript">
+        function myfun() {
+            alert("请在登录后再访问相应网址!");
+        }
+        window.onload=myfun;
+    </script>
+    </#if>
+</#if>
 
 
 <@extends name="footer.ftl"/>
