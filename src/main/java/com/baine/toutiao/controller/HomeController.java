@@ -7,13 +7,11 @@ import com.baine.toutiao.model.ViewObject;
 import com.baine.toutiao.service.LikeService;
 import com.baine.toutiao.service.NewsService;
 import com.baine.toutiao.service.UserService;
-import com.sun.org.apache.bcel.internal.generic.NEW;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 

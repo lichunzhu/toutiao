@@ -1,5 +1,6 @@
 package com.baine.toutiao.controller;
 
+import com.baine.toutiao.async.EventProducer;
 import com.baine.toutiao.model.EntityType;
 import com.baine.toutiao.model.HostHolder;
 import com.baine.toutiao.service.LikeService;
@@ -24,6 +25,9 @@ public class LikeController {
 
     @Autowired
     NewsService newsService;
+
+    @Autowired
+    EventProducer eventProducer;
 
     @RequestMapping(path = {"/like"}, method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
