@@ -37,7 +37,7 @@ public class EventConsumer implements InitializingBean, ApplicationContextAware 
                 List<EventType> eventTypes = entry.getValue().getSupportEventTypes();
                 // 为每一个eventType找到需要组装的类
                 for (EventType eventType: eventTypes) {
-                    if (config.containsKey(eventType)) {
+                    if (!config.containsKey(eventType)) {
                         config.put(eventType, new ArrayList<>());
                     }
                     config.get(eventType).add(entry.getValue());

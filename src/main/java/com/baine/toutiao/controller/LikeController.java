@@ -1,8 +1,11 @@
 package com.baine.toutiao.controller;
 
+import com.baine.toutiao.async.EventModel;
 import com.baine.toutiao.async.EventProducer;
+import com.baine.toutiao.async.EventType;
 import com.baine.toutiao.model.EntityType;
 import com.baine.toutiao.model.HostHolder;
+import com.baine.toutiao.model.News;
 import com.baine.toutiao.service.LikeService;
 import com.baine.toutiao.service.NewsService;
 import com.baine.toutiao.util.ToutiaoUtil;
@@ -38,6 +41,12 @@ public class LikeController {
         int userId = hostHolder.getUser().getId();
         long likeCount = likeService.like(userId, EntityType.ENTITY_NEWS, newsId);
         newsService.updateLikeCount(newsId, (int) likeCount);
+
+        News news = newsService.getById(newsId);
+        eventProducer.fireEvent(new EventModel(EventType.LIKE)
+                                .setActorID(hostHolder.getUser().getId()).setEntityId(newsId)
+                                .setEntityType(EntityType.ENTITY_NEWS).setEntityOwnerId(news.getUserId()));
+
         return ToutiaoUtil.getJSONString(0, String.valueOf(likeCount));
     }
 
