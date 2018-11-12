@@ -25,14 +25,13 @@ public class LikeHandler implements EventHandler {
 
     @Override
     public void doHandle(EventModel model) {
-        System.out.println("Liked");
         // 点赞后给被点赞的人消息提醒
         Message message = new Message();
         // fromId 系统, toId 新闻所有的用户
         int fromId = 3, toId = model.getEntityOwnerId();
         message.setFromId(fromId);
         message.setToId(toId);
-        message.setConversationId(fromId < toId ? String.format("%d_%d", fromId, toId): String.format("%d_%d", toId, fromId));
+        message.setConversationId(messageService.getConversationId(fromId, toId));
         User user = userService.getUser(model.getActorID());
         message.setContent("用户" + user.getName() + "赞了你的资讯, http://127.0.0.1:8080/news/" + model.getEntityId());
         message.setCreatedDate(new Date());

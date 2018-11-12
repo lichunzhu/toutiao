@@ -1,5 +1,6 @@
 package com.baine.toutiao.service;
 
+import com.baine.toutiao.dao.KeyDataDAO;
 import com.baine.toutiao.util.ToutiaoUtil;
 import com.google.gson.Gson;
 import com.qiniu.common.QiniuException;
@@ -11,6 +12,7 @@ import com.qiniu.storage.model.DefaultPutRet;
 import com.qiniu.util.Auth;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,18 +21,31 @@ import java.util.UUID;
 
 @Service
 public class QiniuService {
+
+    final
+    KeyDataDAO keyDataDAO;
+
     private static final Logger logger = LoggerFactory.getLogger(QiniuService.class);
     // 构造一个带指定Zone对象的配置类
     private Configuration cfg = new Configuration(Zone.zone0());
     // ...其他参数参考类注释
     private UploadManager uploadManager = new UploadManager(cfg);
     // ...生成上传凭证，然后准备上传
-    private String accessKey = "WyzkmtGs9qj87ogkXkZ-klsb2QYI7J1aGTfNXD6C";
-    private String secretKey = "4GKRwm0N6eJrCNZf4z12B59xvBZirizsIS5FLInN";
+    private String accessKey;
+    private String secretKey;
     private String QINIU_DOMAIN = "http://phaj7v477.bkt.clouddn.com/";
     private String bucket = "baine";
-    private Auth auth = Auth.create(accessKey, secretKey);
-    private String upToken = auth.uploadToken(bucket);
+    private Auth auth;
+    private String upToken;
+
+    @Autowired
+    public QiniuService(KeyDataDAO keyDataDAO) {
+        this.keyDataDAO = keyDataDAO;
+        accessKey = keyDataDAO.getKeyData().getQiniuAccessKey();
+        secretKey = keyDataDAO.getKeyData().getQiniuSecretKey();
+        auth = Auth.create(accessKey, secretKey);
+        upToken = auth.uploadToken(bucket);
+    }
 
     public String uploadImage(MultipartFile file) throws IOException{
         try {

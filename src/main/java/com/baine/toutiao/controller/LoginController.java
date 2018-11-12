@@ -1,5 +1,8 @@
 package com.baine.toutiao.controller;
 
+import com.baine.toutiao.async.EventModel;
+import com.baine.toutiao.async.EventProducer;
+import com.baine.toutiao.async.EventType;
 import com.baine.toutiao.service.NewsService;
 import com.baine.toutiao.service.UserService;
 import com.baine.toutiao.util.ToutiaoUtil;
@@ -23,6 +26,9 @@ public class LoginController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    EventProducer eventProducer;
 
 
     @RequestMapping(path = {"/reg/"}, method = {RequestMethod.GET, RequestMethod.POST})
@@ -66,6 +72,8 @@ public class LoginController {
                     cookie.setMaxAge(3600 * 24 * 5);
                 }
                 response.addCookie(cookie);
+                eventProducer.fireEvent(new EventModel(EventType.LOGIN)
+                        .setActorID((int) map.get("userId")).setExt("username", username).setExt("email", "1597256127@qq.com"));
                 return ToutiaoUtil.getJSONString(0, "登陆成功");
             }
             else {

@@ -32,4 +32,8 @@ public class MessageService {
     public int getUnreadCount(int userId, String conversationId) {
         return messageDAO.getConversationUnReadCount(userId, conversationId);
     }
+
+    public String getConversationId(int fromId, int toId) {
+        return fromId < toId ? String.format("%d_%d", fromId, toId): String.format("%d_%d", toId, fromId);
+    }
 }

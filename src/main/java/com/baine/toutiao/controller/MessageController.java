@@ -47,7 +47,7 @@ public class MessageController {
             msg.setToId(toId);
             msg.setCreatedDate(new Date());
             msg.setHasRead(0);
-            msg.setConversationId(fromId < toId ? String.format("%d_%d", fromId, toId): String.format("%d_%d", toId, fromId));
+            msg.setConversationId(messageService.getConversationId(fromId, toId));
             messageService.addMessage(msg);
             return ToutiaoUtil.getJSONString(msg.getId());
         } catch (Exception e) {
