@@ -60,3 +60,13 @@ CREATE TABLE `message` (
   INDEX `created_date` (`created_date` ASC))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
+
+DROP TABLE IF EXISTS `reg_ticket`;
+CREATE TABLE `reg_email`  (
+  `username` varchar(64) NOT NULL,
+  `password` varchar(128) NOT NULL,
+  `salt` varchar(32) NOT NULL,
+  `ticket` varchar(45) NOT NULL,
+  `expired` datetime NOT NULL,
+  `status` INT NOT NULL DEFAULT 0
+) ENGINE = InnoDB CHARACTER SET = utf8;

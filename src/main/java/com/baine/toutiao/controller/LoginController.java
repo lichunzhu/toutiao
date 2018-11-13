@@ -31,22 +31,38 @@ public class LoginController {
     EventProducer eventProducer;
 
 
-    @RequestMapping(path = {"/reg/"}, method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(path = {"/reg"}, method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
-    public String register(Model model, @RequestParam("username") String username,
+    public String preRegister(Model model, @RequestParam("username") String username,
                            @RequestParam("password") String password,
                            @RequestParam(value = "rember", defaultValue = "0") int rememberMe,
                            HttpServletResponse response) {
         try {
-            Map<String, Object> map = userService.registerUser(username, password);
+            Map<String, Object> map = userService.registerCheck(username, password);
+            if (!map.containsKey("msgname") && !map.containsKey("msgpwd")) {
+                // 增加发送邮件的事务
+                eventProducer.fireEvent(new EventModel(EventType.REGISTER)
+                        .setExt("username", username).setExt("ticket", (String) map.get("ticket"))
+                        .setExt("domain", ToutiaoUtil.TOUTIAO_DOMAIN));
+                return ToutiaoUtil.getJSONString(0, "预注册成功, 邮件已发送至指定邮箱");
+            }
+            else
+                return ToutiaoUtil.getJSONString(1, map);
+        } catch (Exception e) {
+            logger.error("预注册异常" + e.getMessage());
+            return ToutiaoUtil.getJSONString(1, "预注册异常");
+        }
+    }
+
+    @RequestMapping(path = {"/register"}, method = {RequestMethod.GET})
+    public String register(@RequestParam("ticket") String ticket, HttpServletResponse response) {
+        try {
+            Map<String, Object> map = userService.register(ticket);
             if (map.containsKey("ticket")) {
                 Cookie cookie = new Cookie("ticket", map.get("ticket").toString());
                 cookie.setPath("/");
-                if (rememberMe > 0) {
-                    cookie.setMaxAge(3600 * 24 * 5);
-                }
                 response.addCookie(cookie);
-                return ToutiaoUtil.getJSONString(0, "注册成功");
+                return "redirect:/";
             }
             else {
                 return ToutiaoUtil.getJSONString(1, map);
@@ -57,7 +73,7 @@ public class LoginController {
         }
     }
 
-    @RequestMapping(path = {"/login/"}, method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(path = {"/login"}, method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
     public String login(Model model, @RequestParam("username") String username,
                         @RequestParam("password") String password,
