@@ -33,7 +33,7 @@ public class QiniuService {
     // ...生成上传凭证，然后准备上传
     private String accessKey;
     private String secretKey;
-    private String QINIU_DOMAIN = "http://phaj7v477.bkt.clouddn.com/";
+    private String QINIU_DOMAIN = "http://plbuiuqik.bkt.clouddn.com/";
     private String bucket = "baine";
     private Auth auth;
     private String upToken;

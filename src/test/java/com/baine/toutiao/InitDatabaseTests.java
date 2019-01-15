@@ -80,9 +80,6 @@ public class InitDatabaseTests {
             loginTicketDAO.updateStatus(ticket.getTicket(), 2);
         }
 
-        Assert.assertEquals("newpassword", userDAO.selectById(1).getPassword());
-        userDAO.deleteById(1);
-        Assert.assertNull(userDAO.selectById(1));
 
         Assert.assertEquals(1, loginTicketDAO.selectByTicket("TICKET1").getUserId());
         Assert.assertEquals(2, loginTicketDAO.selectByTicket("TICKET1").getStatus());
