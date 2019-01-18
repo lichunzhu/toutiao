@@ -4,9 +4,12 @@ import com.baine.toutiao.dao.LoginTicketDAO;
 import com.baine.toutiao.dao.RegTicketDAO;
 import com.baine.toutiao.dao.UserDAO;
 import com.baine.toutiao.model.LoginTicket;
+import com.baine.toutiao.model.Message;
 import com.baine.toutiao.model.RegTicket;
 import com.baine.toutiao.model.User;
 import com.baine.toutiao.util.ToutiaoUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -15,6 +18,8 @@ import java.util.*;
 
 @Service
 public class UserService {
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
+
     @Autowired
     UserDAO userDAO;
 
@@ -23,6 +28,9 @@ public class UserService {
 
     @Autowired
     RegTicketDAO regTicketDAO;
+
+    @Autowired
+    MessageService messageService;
 
     public Map<String, Object> registerCheck(String username, String password) {
         Map<String, Object> map = new HashMap<>();
@@ -84,7 +92,20 @@ public class UserService {
         // 下发登录的ticket
         String loginTicket = addLoginTicket(user.getId());
         map.put("ticket", loginTicket);
-
+        try {
+            int fromId = 3, toId = user.getId();
+            Message msg = new Message();
+            msg.setContent("欢迎来到头条资讯站，本站使用Spring boot编写，祝您使用愉快!");
+            msg.setFromId(fromId);
+            msg.setToId(toId);
+            msg.setCreatedDate(new Date());
+            msg.setHasRead(0);
+            msg.setConversationId(messageService.getConversationId(fromId, toId));
+            messageService.addMessage(msg);
+        } catch (Exception e) {
+            logger.error("发送站内信失败" + e.getMessage());
+            map.put("msg", "欢迎站内信发送失败");
+        }
         return map;
     }
 

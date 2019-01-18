@@ -2,6 +2,7 @@
     <div id="main">
         <div class="container">
             <ul class="letter-list">
+                <#if conversations??>
                 <#list conversations as conversation>
                 <li id="conversation-item-10005_622873">
                     <a class="letter-link" href="/msg/detail?conversationId=${conversation.conversation.conversationId!}"></a>
@@ -40,6 +41,7 @@
                     </div>
                 </li>
                 </#list>
+                </#if>
             </ul>
 
         </div>

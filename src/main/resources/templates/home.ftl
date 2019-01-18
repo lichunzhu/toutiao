@@ -63,6 +63,7 @@
                 <div class="daily">
 
                     <#assign cur_date = ''>
+                    <#if vos??>
                     <#list vos as vo>
                     <#if (cur_date != (vo.news.createdDate)?string('yyyy-MM-dd'))>
                         <#if (vo?index > 0)>
@@ -96,7 +97,7 @@
                                 </div>
                                 <div class="content-main">
                                     <h3 class="title">
-                                        <a target="_blank" rel="external nofollow" href="${vo.news.link!}">${vo.news.title!}</a>
+                                        <a target="_blank" rel="external nofollow" href="${vo.newsURL}">${vo.news.title!}</a>
                                     </h3>
                                     <div class="meta">
                                         ${vo.news.link!}
@@ -136,6 +137,7 @@
                         </#if>
 
                     </#list>
+                    </#if>
 
         </div>
     </div>

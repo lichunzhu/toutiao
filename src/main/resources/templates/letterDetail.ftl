@@ -2,6 +2,7 @@
     <div id="main">
         <div class="container">
             <ul class="letter-chatlist">
+                <#if messages??>
                 <#list messages as msg>
                 <li id="msg-item-4009580">
                     <a class="list-head" href="/user/${msg.userId!}">
@@ -20,7 +21,7 @@
                         </div>
                     </div>
                 </li>
-                </#list>
+                </#list></#if>
             </ul>
         </div>
         <script type="text/javascript">

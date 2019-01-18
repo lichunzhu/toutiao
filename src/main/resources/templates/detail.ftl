@@ -92,6 +92,7 @@
             </div>
 
             <div id="comments" class="comments">
+                <#if comments??>
                 <#list comments as commentvo>
                 <div class="media">
                     <a class="media-left" href="http://nowcoder.com/u/210176">
@@ -104,6 +105,7 @@
                     </div>
                 </div>
                 </#list>
+                </#if>
             </div>
 
         </div>

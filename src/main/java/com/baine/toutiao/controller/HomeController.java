@@ -37,6 +37,7 @@ public class HomeController {
             ViewObject vo = new ViewObject();
             vo.set("news", news);
             vo.set("user", userService.getUser(news.getUserId()));
+            vo.set("newsURL", "/news/" + String.valueOf(news.getId()));
             if(localUserId != 0) {
                 vo.set("like", likeService.getLikeStatus(localUserId, EntityType.ENTITY_NEWS, news.getId()));
             }
