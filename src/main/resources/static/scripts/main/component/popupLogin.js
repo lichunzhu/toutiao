@@ -92,6 +92,7 @@
                     if (oResult.code === 0) {
 //                        window.location.reload();
                         that.emit('register');
+                        alert('预注册成功，请注意查收邮件!');
                     } else {
                         oResult.msgname && that.iptError(that.emailIpt, oResult.msgname);
                         oResult.msgpwd && that.iptError(that.pwdIpt, oResult.msgpwd);

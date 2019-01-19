@@ -32,6 +32,26 @@ public class UserService {
     @Autowired
     MessageService messageService;
 
+    public static String getRandomString(int length) {
+        String str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        String sig = "!\"#$%&\'()*+,-./`:;<=>?[]^_{|}~@";
+        int n = str.length(), m = sig.length();
+        Random random = new Random();
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < length; i++) {
+            int number = random.nextInt(2);
+            if (number == 0) {
+                number = random.nextInt(n);
+                sb.append(str.charAt(number));
+            }
+            else {
+                number = random.nextInt(m);
+                sb.append(sig.charAt(number));
+            }
+        }
+        return sb.toString();
+    }
+
     public Map<String, Object> registerCheck(String username, String password) {
         Map<String, Object> map = new HashMap<>();
         if (StringUtils.isEmpty(username)) {
@@ -56,7 +76,7 @@ public class UserService {
         // 根据用户邮箱下发注册用的ticket, 发送邮件, 用户点击网页后才能完成注册
         RegTicket regTicket = new RegTicket();
         regTicket.setUsername(username);
-        regTicket.setSalt(UUID.randomUUID().toString().substring(0, 5));
+        regTicket.setSalt(getRandomString(8));
         regTicket.setPassword(ToutiaoUtil.MD5(password + regTicket.getSalt()));
         Date date = new Date();
         date.setTime(date.getTime() + 1000 * 3600 * 24);
