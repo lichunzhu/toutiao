@@ -8,57 +8,7 @@
 
 ### 目录结构
 
-├── README.md               	 	   // help
-
-├── pom.xml                 	 	   // mvn依赖包
-
-├── src                     			// 源码目录
-
-│   ├── main
-
-│	│	├── java.com.baine.toutiao		// 主代码目录
-
-│	│	│	├── aspect					// AOP试用
-
-│	│	│	├── async					// 异步事件队列
-
-│	│	│	├── configuration			// freemarker和interceptor的配置
-
-│	│	│	├── controller				// 各网页的controller
-
-│	│	│	├── dao						// DAO层
-
-│	│	│	├── interceptor				// 网站拦截器实现
-
-│	│	│	├── model					// 各数据模型
-
-│	│	│	├── service					// 服务层
-
-│	│	│	├── util					// 工具函数
-
-│	│	│	└── ToutiaoApplication.java
-
-│	│	└── resources					// 资源目录
-
-│	│		├── com.baine.toutiao.dao	// 逻辑复杂的dao
-
-│	│		├── static					// 静态文件js,font,img等
-
-│	│		├── templates				// freemarker模板
-
-│	│		├── application.properties	
-
-│	│		└── mybatis-config.xml		
-
-│   └── test							// 一些测试代码               
-
-├── .gitignore
-
-├── .mvn/wrapper
-
-├── mvnw                         
-
-└── mvnw.cmd
+![](https://upload.cc/i1/2019/03/13/TcWHhN.png)
 
 ### 实现的功能
 
