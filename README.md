@@ -8,9 +8,9 @@
 
 ### 目录结构
 
-![](https://upload.cc/i1/2019/03/13/TcWHhN.png)
+![](/presentation/structure.png)
 
-### 实现的功能
+### 功能实现
 
 目前网站部署于阿里云服务器[http://59.110.152.215/](http://59.110.152.215/)上。
 
@@ -22,3 +22,19 @@
 5. 资讯评论功能(MySQL实现)
 6. 登录拦截，站内信查看的身份验证(interceptor拦截)
 
+### 效果展示
+![主页](/presentation/home_page.png)
+
+<center>主页赞踩<center>
+
+![新闻细节页](/presentation/detail.png)
+
+<center>新闻细节页与评论<center>
+
+![上传页](/presentation/upload.png)
+
+<center>ajax上传<center>
+
+![站内信页](/presentation/message.png)
+
+<center>站内信-点赞提示<center>
